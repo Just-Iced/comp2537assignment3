@@ -1,17 +1,26 @@
 const pokemonList = document.getElementById("pokemonList");
 const pokemonTemplate = document.getElementById("pokemonTemplate");
-var pageNum = 0;
+
 async function loadPokemon() {
-    let response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${pageNum * 10}&limit=10`);
-    let jsonObj = await response.json();
-    for (let pokemon of jsonObj.results) {
+    let ids = [];
+    for (let i = 0; i < 10; i++) {
+        let id = Math.floor(Math.random() * 1000) + 1;
+        while (ids.includes(id)) {
+            id = Math.floor(Math.random() * 1000) + 1;
+        }
+        ids.push(id);
+    }
+    for (let id of ids) {
+        let response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${id}&limit=10`);
+        let jsonObj = await response.json();
+        let pokemon = jsonObj.results[0];
         let response2 = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
         let thisPokemon = await response2.json();
         for (let i = 0; i < 2; i++) {
             let newPokemon = pokemonTemplate.content.cloneNode(true);
             newPokemon.querySelector(".card-title").innerHTML = thisPokemon.name.charAt(0).toUpperCase() + thisPokemon.name.slice(1);
             newPokemon.querySelector(".card-img-top").src = thisPokemon.sprites.other['official-artwork'].front_default;
-            await pokemonList.appendChild(newPokemon);
+            pokemonList.appendChild(newPokemon);
         }
     }
 }
@@ -35,11 +44,13 @@ function setup() {
                     secondCard = null;
                 } else {
                     setTimeout(() => {
-                        firstCard.parentElement.classList.toggle("flip");
-                        secondCard.parentElement.classList.toggle("flip");
-                        firstCard = null;
-                        secondCard = null;
-                    }, 1000);
+                        if (firstCard && secondCard) {
+                            firstCard.parentElement.classList.toggle("flip");
+                            secondCard.parentElement.classList.toggle("flip");
+                            firstCard = null;
+                            secondCard = null;
+                        }
+                    }, 800);
                 }
 
             }
