@@ -1,0 +1,13 @@
+<%- include('partials/header', {pageTitle: "Pokemon Game"}) %>
+
+<p class="text-center">Welcome to the Pokemon Game!</p>
+<div class="container container-grid" id="pokemonList"></div>
+<template id="pokemonTemplate">
+    <button class="card flip" style="width: 12rem;">
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <img class="card-img-top" src="" alt="Pokemon Image">
+        </div>
+    </button>
+</template>
+<%- include('partials/footer', {scripts: ["index.js"]}) %>

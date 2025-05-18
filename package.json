@@ -1,0 +1,18 @@
+{
+  "name": "comp2537assignment3",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "comp2537assignment3": "file:",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "jquery": "^3.7.1"
+  }
+}
