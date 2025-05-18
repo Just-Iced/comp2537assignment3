@@ -3,7 +3,7 @@ const pokemonTemplate = document.getElementById("pokemonTemplate");
 
 async function loadPokemon() {
     let ids = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 3; i++) {
         let id = Math.floor(Math.random() * 1000) + 1;
         while (ids.includes(id)) {
             id = Math.floor(Math.random() * 1000) + 1;
@@ -18,10 +18,12 @@ async function loadPokemon() {
         let thisPokemon = await response2.json();
         for (let i = 0; i < 2; i++) {
             let newPokemon = pokemonTemplate.content.cloneNode(true);
-            newPokemon.querySelector(".card-title").innerHTML = thisPokemon.name.charAt(0).toUpperCase() + thisPokemon.name.slice(1);
             newPokemon.querySelector(".card-img-top").src = thisPokemon.sprites.other['official-artwork'].front_default;
             pokemonList.appendChild(newPokemon);
         }
+    }
+    for (let i = pokemonList.children.length; i >= 0; i--) {
+        pokemonList.appendChild(pokemonList.children[Math.random() * i | 0]);
     }
 }
 
@@ -29,28 +31,28 @@ function setup() {
     let firstCard;
     let secondCard;
     document.querySelectorAll(".card").forEach(card => {
-        card.addEventListener("click", e => {
+        card.addEventListener("click", function click(e) {
             e.preventDefault();
             card.classList.toggle("flip");
             if (!firstCard) {
                 firstCard = card.querySelector("img");
             } else {
                 secondCard = card.querySelector("img");
-                if (firstCard.src === secondCard.src) {
+                if (firstCard.src === secondCard.src && firstCard !== secondCard) {
                     console.log("match");
-                    firstCard.parentElement.removeEventListener("click", this);
-                    secondCard.parentElement.removeEventListener("click", this);
+                    secondCard.parentElement.parentElement.replaceWith(secondCard.parentElement.parentElement.cloneNode(true));
+                    firstCard.parentElement.parentElement.replaceWith(firstCard.parentElement.parentElement.cloneNode(true));
                     firstCard = null;
                     secondCard = null;
                 } else {
                     setTimeout(() => {
                         if (firstCard && secondCard) {
-                            firstCard.parentElement.classList.toggle("flip");
-                            secondCard.parentElement.classList.toggle("flip");
+                            firstCard.parentElement.parentElement.classList.toggle("flip");
+                            secondCard.parentElement.parentElement.classList.toggle("flip");
                             firstCard = null;
                             secondCard = null;
                         }
-                    }, 800);
+                    }, 500);
                 }
 
             }
