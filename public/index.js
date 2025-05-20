@@ -109,6 +109,7 @@ function setup() {
                         alert(`You won in ${clicksMade} clicks!`);
                         resetBtn.click();
                     } else if (matchesStreak >= 2) {
+                        secondCard = 1;
                         for (card of document.querySelectorAll(".card")) {
                             card.classList.toggle("flip");
                             await new Promise(r => setTimeout(r, 200));
@@ -119,6 +120,7 @@ function setup() {
                             await new Promise(r => setTimeout(r, 200));
                         }
                         matchesStreak = 0;
+                        secondCard = undefined;
                     }
                     matchStreakDisplay.innerText = `Matches Streak: ${matchesStreak}`;
                 } else {
