@@ -85,7 +85,7 @@ function setup() {
     document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", async e => {
             e.preventDefault();
-            if (e.target.parentElement.classList.contains("flip")) {
+            if (e.target.parentElement.classList.contains("flip") || secondCard) {
                 return
             }
             clicksMade++;
@@ -102,9 +102,6 @@ function setup() {
                     matchesLeft--;
                     matchLeftDisplay.innerText = `Matches Left: ${matchesLeft}`;
                     matchesStreak++;
-
-                    secondCard.parentElement.replaceWith(secondCard.parentElement.cloneNode(true));
-                    firstCard.parentElement.replaceWith(firstCard.parentElement.cloneNode(true));
                     firstCard = null;
                     secondCard = null;
                     if (matchesLeft <= 0) {
