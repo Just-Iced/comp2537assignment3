@@ -2,21 +2,21 @@
 
 <h1 class="text-center">Welcome to the Pokemon Game!</h1>
 <div class="text-center mb-4">
-  <button class="btn btn-info" id="easyBtn">Easy</button>
+  <button class="btn btn-info" id="easyBtn" disabled="true">Easy</button>
   <button class="btn btn-warning" id="mediumBtn">Medium</button>
   <button class="btn btn-danger" id="hardBtn">Hard</button><br><br>
+  <button class="btn btn-success" id="startBtn">Start Game</button><br><br>
   <span class="text-muted" id="timer">Time Remaining: 0</span>
   <button class="btn btn-secondary" id="resetBtn">Reset</button><br>
   <span class="text-muted" id="clicks">Clicks Made: 0</span>
 </div>
 <img src="loading.gif" alt="Loading..." id="loading" class="loading img-fluid" style="display: none;">
-<div class="container container-grid" id="pokemonList"></div>
+<div class="container d-none" id="pokemonList"></div>
 <div class="container text-center" id="pokemonGrid"></div>
 <template id="pokemonTemplate">
-    <button class="card flip">
-      <div class="card-body">
-        <img class="card-img-top" src="" alt="Pokemon Image">
-      </div>
-    </button>
+  <button class="card back_face" id="card">
+    <img class="front_face" src="" alt="A pokemon card">
+    <img class="back_face" src="back.webp" alt="A pokemon card back">
+  </button>
 </template>
 <%- include('partials/footer', {scripts: ["index.js"]}) %>
