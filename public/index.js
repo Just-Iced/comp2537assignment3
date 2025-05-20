@@ -7,6 +7,8 @@ const clicksDisplay = document.getElementById("clicks");
 const scoreDisplay = document.getElementById("matches");
 const matchLeftDisplay = document.getElementById("matchesLeft");
 const matchStreakDisplay = document.getElementById("matchStreak");
+const lightModeBtn = document.getElementById("lightMode");
+const darkModeBtn = document.getElementById("darkMode");
 const easySize = 3;
 const mediumSize = 6;
 const hardSize = 9;
@@ -188,4 +190,16 @@ start.addEventListener("click", e => {
     } else {
         alert("Please select a difficulty first!");
     }
+});
+lightModeBtn.disabled = true;
+lightModeBtn.addEventListener("click", e => {
+    document.querySelector("body").classList.remove("dark");
+    lightModeBtn.disabled = true;
+    darkModeBtn.disabled = false;
+});
+
+darkModeBtn.addEventListener("click", e => {
+    document.querySelector("body").classList.add("dark");
+    lightModeBtn.disabled = false;
+    darkModeBtn.disabled = true;
 });
