@@ -4,6 +4,9 @@ const pokemonGrid = document.getElementById("pokemonGrid");
 const loadingImg = document.getElementById("loading");
 const timerDisplay = document.getElementById("timer");
 const clicksDisplay = document.getElementById("clicks");
+const scoreDisplay = document.getElementById("matches");
+const matchLeftDisplay = document.getElementById("matchesLeft");
+const matchStreakDisplay = document.getElementById("matchStreak");
 const easySize = 3;
 const mediumSize = 6;
 const hardSize = 9;
@@ -12,6 +15,9 @@ var clicksMade = 0;
 var timeRemaining = 0;
 var timer = null;
 var lastSize = easySize;
+var matches = 0;
+var matchesLeft = 0;
+var matchesStreak = 0;
 
 async function loadPokemon(size = easySize) {
     pokemonGrid.innerHTML = "";
@@ -21,6 +27,9 @@ async function loadPokemon(size = easySize) {
     clicksMade = 0;
     timerDisplay.innerText = `Time Remaining: 0`;
     clicksDisplay.innerText = `Clicks Made: 0`;
+    scoreDisplay.innerText = `Matches Made: 0`;
+    matchLeftDisplay.innerText = `Matches Left: 0`;
+    matchStreakDisplay.innerText = `Matches Streak: 0`;
     loadingImg.style.display = "block";
     let ids = [];
     for (let i = 0; i < size; i++) {
@@ -54,10 +63,15 @@ async function loadPokemon(size = easySize) {
     timeRemaining = Math.floor(size * 30);
     clicksDisplay.innerText = `Clicks Made: ${clicksMade}`;
     timerDisplay.innerText = `Time Remaining: ${timeRemaining}`;
+    matchesLeft = size;
+    matchesStreak = 0;
+    document.getElementById("totalMatches").innerText = `Total Matches: ${size}`;
+    matchLeftDisplay.innerText = `Matches Left: ${matchesLeft}`;
     timer = setInterval(() => {
         timeRemaining--;
         timerDisplay.innerText = `Time Remaining: ${timeRemaining}`;
         if (timeRemaining <= 0) {
+            timerDisplay.innerText = `Time Remaining: 0`;
             clearInterval(timer);
             alert("Time's up! You lose!");
             location.reload();
@@ -69,11 +83,8 @@ function setup() {
     let firstCard;
     let secondCard;
     document.querySelectorAll(".card").forEach(card => {
-        card.addEventListener("click", e => {
+        card.addEventListener("click", async e => {
             e.preventDefault();
-            // if (!card.classList.contains("flip")) {
-            //     return;
-            // }
             clicksMade++;
             clicksDisplay.innerText = `Clicks Made: ${clicksMade}`;
             card.classList.toggle("flip");
@@ -83,12 +94,35 @@ function setup() {
             } else {
                 secondCard = card.querySelector(".front_face");
                 if (firstCard.src === secondCard.src && firstCard !== secondCard) {
-                    console.log("match");
+                    matches++;
+                    scoreDisplay.innerText = `Matches Made: ${matches}`;
+                    matchesLeft--;
+                    matchLeftDisplay.innerText = `Matches Left: ${matchesLeft}`;
+                    matchesStreak++;
+
                     secondCard.parentElement.replaceWith(secondCard.parentElement.cloneNode(true));
                     firstCard.parentElement.replaceWith(firstCard.parentElement.cloneNode(true));
                     firstCard = null;
                     secondCard = null;
+                    if (matchesLeft <= 0) {
+                        clearInterval(timer);
+                        alert(`You won in ${clicksMade} clicks!`);
+                        location.reload();
+                    } else if (matchesStreak >= 2) {
+                        for (card of document.querySelectorAll(".card")) {
+                            card.classList.toggle("flip");
+                            await new Promise(r => setTimeout(r, 200));
+                        }
+                        await new Promise(r => setTimeout(r, 400));
+                        for (card of document.querySelectorAll(".card")) {
+                            card.classList.toggle("flip");
+                            await new Promise(r => setTimeout(r, 200));
+                        }
+                        matchesStreak = 0;
+                    }
+                    matchStreakDisplay.innerText = `Matches Streak: ${matchesStreak}`;
                 } else {
+                    matchesStreak = 0;
                     setTimeout(() => {
                         if (firstCard && secondCard) {
                             firstCard.parentElement.classList.toggle("flip");
@@ -109,6 +143,7 @@ const hardBtn = document.getElementById("hardBtn");
 const resetBtn = document.getElementById("resetBtn");
 const start = document.getElementById("startBtn");
 easyBtn.classList.add("active");
+easyBtn.disabled = true;
 easyBtn.addEventListener("click", e => {
     lastSize = easySize;
     easyBtn.classList.add("active");
