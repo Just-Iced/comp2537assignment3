@@ -76,7 +76,7 @@ async function loadPokemon(size = easySize) {
             timerDisplay.innerText = `Time Remaining: 0`;
             clearInterval(timer);
             alert("Time's up! You lose!");
-            location.reload();
+            resetBtn.click();
         }
     }, 1000);
 }
@@ -109,7 +109,7 @@ function setup() {
                     if (matchesLeft <= 0) {
                         clearInterval(timer);
                         alert(`You won in ${clicksMade} clicks!`);
-                        location.reload();
+                        resetBtn.click();
                     } else if (matchesStreak >= 2) {
                         for (card of document.querySelectorAll(".card")) {
                             card.classList.toggle("flip");
