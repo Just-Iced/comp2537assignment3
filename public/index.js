@@ -1,6 +1,5 @@
 const pokemonList = document.getElementById("pokemonList");
 const pokemonTemplate = document.getElementById("pokemonTemplate");
-const pokemonGrid = document.getElementById("pokemonGrid");
 const loadingImg = document.getElementById("loading");
 const timerDisplay = document.getElementById("timer");
 const clicksDisplay = document.getElementById("clicks");
@@ -22,7 +21,6 @@ var matchesLeft = 0;
 var matchesStreak = 0;
 
 async function loadPokemon(size = easySize) {
-    pokemonGrid.innerHTML = "";
     pokemonList.innerHTML = "";
     pokemonList.classList.add("d-none");
     clearInterval(timer);
@@ -87,6 +85,9 @@ function setup() {
     document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", async e => {
             e.preventDefault();
+            if (e.target.parentElement.classList.contains("flip")) {
+                return
+            }
             clicksMade++;
             clicksDisplay.innerText = `Clicks Made: ${clicksMade}`;
             card.classList.toggle("flip");
